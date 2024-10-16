@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendingWebApplication</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados podem ser adicionados aqui */
+        .expenses-container {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 expenses-container">
+                <h3 class="text-center mb-4">Lista de Gastos</h3>
+                <h3 class="text-center mb-4"><a href="/Gasto/Register">Novo</a> | <a href="/Home/Logout">Sair</a></h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Categoria</th>
+                            <th>Valor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in (List<GastoModel>)ViewBag.Gastos)
+                        {
+                            <tr>
+                                <td>@item.Data.ToString("dd/MM/yyyy")</td>
+                                <td>@item.Descricao</td>
+                                <td>@(item.Categoria != null ? item.Categoria.Descricao : string.Empty)</td>
+                                <td>@item.Valor</td>
+                                <td><a href="/Gasto/Edit?id=@item.Id">Editar</a> | <a href="/Gasto/Delete?id=@item.Id">Excluir</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h3 class="text-center mb-4">Total @ViewBag.TotalGastos</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (opcional, se necessário) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

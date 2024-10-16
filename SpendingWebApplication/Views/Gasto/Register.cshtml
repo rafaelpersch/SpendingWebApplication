@@ -1,0 +1,84 @@
+﻿@{
+    Layout = null;
+}
+
+@model SpendingWebApplication.Models.GastoModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendingWebApplication</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <style>
+        /* Estilos personalizados podem ser adicionados aqui */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 form-container">
+                <h2 class="text-center mb-4">Cadastro de Gastos</h2>
+                <form method="post" action="/Gasto/Save">
+                    @Html.AntiForgeryToken()
+                    @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @class = "form-control", @type = "hidden" } })
+
+                    <div class="form-group">
+                        <label for="date">Data:</label>
+                        <input type="date" asp-for="Data" class="form-control" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria:</label>
+                        @if (ViewBag.Categorias != null)
+                        {
+                            <select class="form-control" required name="Categoria.Id" id="categoria">
+                                <option value=""></option>
+                                @foreach (var categoria in ViewBag.Categorias)
+                                {
+                                    if (Model.Categoria != null && Model.Categoria.Id == categoria.Id)
+                                    {
+                                        <option value="@categoria.Id" selected>@categoria.Descricao</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@categoria.Id">@categoria.Descricao</option>
+                                    }
+                                }
+                            </select>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Descrição:</label>
+                        <input type="text" class="form-control" id="description" name="Descricao" placeholder="Digite a descrição do gasto" required value="@Model.Descricao">
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Valor:</label>
+                        <input type="number" min="1" class="form-control" id="amount" name="Valor" placeholder="Digite o valor do gasto" required value="@Model.Valor">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Cadastrar Gasto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+    <script>
+        $(document).ready(function () {
+            $('#categoria').change(function () {
+                var selectedValue = $(this).val(); // Obtém o valor do item selecionado
+                var selectedDescription = $(this).find('option:selected').text(); // Obtém a descrição do item selecionado
+                $("#description").val(selectedDescription);
+            });
+        });
+    </script>
+</body>
+</html>
